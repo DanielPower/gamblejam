@@ -1,0 +1,4 @@
+{
+  "Lua.workspace.userThirdParty": ["./lls-addons"],
+  "Lua.runtime.version": "LuaJIT"
+}

@@ -182,27 +182,6 @@
 				}
 			}
 		],
-		"PlayerStart": [
-			{
-				"id": "PlayerStart",
-				"iid": "f80f0f12-66b0-11ec-b121-c7e0ed2499ae",
-				"layer": "GameEntities",
-				"x": 72,
-				"y": 368,
-				"width": 20,
-				"height": 20,
-				"color": 12115535,
-				"customFields": {
-					"life": 3,
-					"isAwaken": true,
-					"bag": [
-						"Mana_potion",
-						"Healing_potion"
-					],
-					"weapon": "Trout"
-				}
-			}
-		],
 		"Item": [
 			{
 				"id": "Item",
@@ -215,6 +194,27 @@
 				"color": 16763904,
 				"customFields": {
 					"type": "Key"
+				}
+			}
+		],
+		"PlayerStart": [
+			{
+				"id": "PlayerStart",
+				"iid": "f80f0f12-66b0-11ec-b121-c7e0ed2499ae",
+				"layer": "GameEntities",
+				"x": 104,
+				"y": 368,
+				"width": 20,
+				"height": 20,
+				"color": 12115535,
+				"customFields": {
+					"life": 3,
+					"isAwaken": true,
+					"bag": [
+						"Mana_potion",
+						"Healing_potion"
+					],
+					"weapon": "Trout"
 				}
 			}
 		],

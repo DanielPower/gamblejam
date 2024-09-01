@@ -1,11 +1,15 @@
 Concord = require("lib.concord")
 FileWatcher = require("lib.watcher")
-inspect = require("lib.inspect")
-pprint = require("lib.pprint")
-ldtk = require("lib.ldtk")
+Inspect = require("lib.inspect")
+Pprint = require("lib.pprint")
+
 require("ecs.components")
 
+local ldtk = require("lib.ldtk")
 local DrawSystem = require("ecs.systems/draw")
+local PlayerSystem = require("ecs.systems/player")
+local MoveSystem = require("ecs.systems/move")
+local GravitySystem = require("ecs.systems/gravity")
 
 GAME = {}
 
@@ -24,7 +28,7 @@ function ldtk.onLevelLoaded(level)
 	GAME.layers = {}
 	GAME.level = level
 	GAME.world = Concord.world()
-	GAME.world:addSystems(DrawSystem)
+	GAME.world:addSystems(DrawSystem, PlayerSystem, MoveSystem, GravitySystem)
 	GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
 		print("Level [" .. level.id .. "] has changed. Reloading...")
 		ldtk:load("ldtk/levels.ldtk")
@@ -33,19 +37,22 @@ function ldtk.onLevelLoaded(level)
 end
 
 function ldtk.onEntity(data)
-	print("level:")
-	pprint(GAME.level)
 	local e = Concord.entity(GAME.world):give("position", data.x, data.y)
 
 	if data.id == "PlayerStart" then
-		e:give("player")
+		e:give("player", {
+			left = "a",
+			right = "d",
+			jump = "space",
+		})
+		e:give("velocity", 0, 0)
+		e:give("gravity")
 	end
 
 	if data.id == "Enemy" then
 		e:give("enemy")
 	end
 
-	pprint(entity)
 	-- A new entity is created.
 end
 
@@ -56,6 +63,13 @@ end
 
 function ldtk.onLevelCreated(level)
 	-- print("onLevelCreated")
+end
+
+function love.keypressed(key)
+	print(key)
+	if key == "escape" then
+		love.event.quit()
+	end
 end
 
 function love.update(dt)
