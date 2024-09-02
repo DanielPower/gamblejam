@@ -28,12 +28,6 @@ function ldtk.onLevelLoaded(level)
 	GAME.layers = {}
 	GAME.level = level
 	GAME.world = Concord.world()
-	GAME.world:addSystems(DrawSystem, PlayerSystem, MoveSystem, GravitySystem)
-	GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
-		print("Level [" .. level.id .. "] has changed. Reloading...")
-		ldtk:load("ldtk/levels.ldtk")
-		ldtk:level("Level1")
-	end)
 end
 
 function ldtk.onEntity(data)
@@ -52,24 +46,26 @@ function ldtk.onEntity(data)
 	if data.id == "Enemy" then
 		e:give("enemy")
 	end
-
-	-- A new entity is created.
 end
 
 function ldtk.onLayer(layer)
-	-- print("onLayer")
 	GAME.layers[layer.id] = layer
 end
 
 function ldtk.onLevelCreated(level)
-	-- print("onLevelCreated")
+	GAME.world:addSystems(DrawSystem, PlayerSystem, MoveSystem, GravitySystem)
+	GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
+		print("Level [" .. level.id .. "] has changed. Reloading...")
+		ldtk:load("ldtk/levels.ldtk")
+		ldtk:level("Level1")
+	end)
 end
 
 function love.keypressed(key)
-	print(key)
 	if key == "escape" then
 		love.event.quit()
 	end
+	GAME.world:emit("keypressed", key)
 end
 
 function love.update(dt)
