@@ -1,14 +1,14 @@
 local bump = require("lib.bump")
 
 local PhysicsSystem = Concord.system({
-	static = { "position", "box" },
+	bodies = { "position", "box" },
 	moving = { "position", "box", "velocity" },
 })
 
 function PhysicsSystem:init()
 	self.world = bump.newWorld()
 
-	function self.static.onAdded(_, entity)
+	function self.bodies.onAdded(_, entity)
 		self.world:add(
 			entity,
 			entity.position.x,
@@ -18,7 +18,7 @@ function PhysicsSystem:init()
 		)
 	end
 
-	function self.static.onRemoved(_, entity)
+	function self.bodies.onRemoved(_, entity)
 		self.world:remove(entity)
 	end
 end
@@ -48,7 +48,7 @@ function PhysicsSystem:update(dt)
 end
 
 function PhysicsSystem:draw()
-	for _, entity in ipairs(self.static) do
+	for _, entity in ipairs(self.bodies) do
 		love.graphics.rectangle(
 			"line",
 			entity.position.x,

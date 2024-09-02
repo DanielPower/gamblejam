@@ -4,11 +4,6 @@ local DrawSystem = Concord.system({
 })
 
 function DrawSystem:draw()
-	for _, e in ipairs(self.players) do
-		love.graphics.setColor(0, 255, 0)
-		love.graphics.circle("fill", e.position.x, e.position.y, 10)
-	end
-
 	for _, e in ipairs(self.enemies) do
 		love.graphics.setColor(255, 0, 0)
 		love.graphics.circle("fill", e.position.x, e.position.y, 10)

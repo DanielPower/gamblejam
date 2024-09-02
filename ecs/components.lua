@@ -21,11 +21,6 @@ Concord.component("velocity", function(c, x, y)
 	c.ty = 0
 end)
 
-Concord.component("debugCircle", function(c, radius, color)
-	c.radius = radius
-	c.color = color
-end)
-
 Concord.component("box", function(c, width, height)
 	c.width = width
 	c.height = height

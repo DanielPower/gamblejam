@@ -41,7 +41,7 @@ function ldtk.onEntity(data)
 		})
 		e:give("velocity", 0, 0)
 		e:give("gravity")
-		e:give("box", 4, 4)
+		e:give("box", 12, 12)
 	end
 
 	if data.id == "Enemy" then

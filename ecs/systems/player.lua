@@ -2,7 +2,7 @@ local PlayerSystem = Concord.system({
 	players = { "position", "velocity", "player" },
 })
 
-local speed = 125
+local speed = 150
 
 function PlayerSystem:keypressed(key)
 	for _, e in ipairs(self.players) do
