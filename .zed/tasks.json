@@ -1,0 +1,14 @@
+// Static tasks configuration.
+//
+// Example:
+[
+  {
+    "label": "Run game",
+    "command": "love .",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "never",
+    "shell": "system"
+  }
+]
