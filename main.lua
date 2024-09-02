@@ -8,8 +8,8 @@ require("ecs.components")
 local ldtk = require("lib.ldtk")
 local DrawSystem = require("ecs.systems/draw")
 local PlayerSystem = require("ecs.systems/player")
-local MoveSystem = require("ecs.systems/move")
 local GravitySystem = require("ecs.systems/gravity")
+local PhysicsSystem = require("ecs.systems/physics")
 
 GAME = {}
 
@@ -41,6 +41,7 @@ function ldtk.onEntity(data)
 		})
 		e:give("velocity", 0, 0)
 		e:give("gravity")
+		e:give("box", 4, 4)
 	end
 
 	if data.id == "Enemy" then
@@ -49,11 +50,22 @@ function ldtk.onEntity(data)
 end
 
 function ldtk.onLayer(layer)
+	Pprint(layer.intGrid)
+	for i, v in ipairs(layer.intGrid) do
+		local x = (i - 1) % layer.width
+		local y = math.floor((i - 1) / layer.width)
+		if v == 1 then
+			print("box")
+			Concord.entity(GAME.world)
+				:give("position", x * layer.gridSize, y * layer.gridSize)
+				:give("box", layer.gridSize, layer.gridSize)
+		end
+	end
 	GAME.layers[layer.id] = layer
 end
 
 function ldtk.onLevelCreated(level)
-	GAME.world:addSystems(DrawSystem, PlayerSystem, MoveSystem, GravitySystem)
+	GAME.world:addSystems(DrawSystem, PlayerSystem, GravitySystem, PhysicsSystem)
 	GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
 		print("Level [" .. level.id .. "] has changed. Reloading...")
 		ldtk:load("ldtk/levels.ldtk")
@@ -64,6 +76,9 @@ end
 function love.keypressed(key)
 	if key == "escape" then
 		love.event.quit()
+	end
+	if key == "r" then
+		love.event.quit("restart")
 	end
 	GAME.world:emit("keypressed", key)
 end
