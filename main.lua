@@ -1,3 +1,5 @@
+love.graphics.setDefaultFilter("nearest", "nearest")
+
 Concord = require("lib.concord")
 FileWatcher = require("lib.watcher")
 Inspect = require("lib.inspect")
@@ -5,11 +7,18 @@ Pprint = require("lib.pprint")
 
 require("ecs.components")
 
+local animations = require("animations")
+
 local ldtk = require("lib.ldtk")
 local DrawSystem = require("ecs.systems/draw")
 local PlayerSystem = require("ecs.systems/player")
 local GravitySystem = require("ecs.systems/gravity")
 local PhysicsSystem = require("ecs.systems/physics")
+
+local player = require("ecs.assemblages/player")
+
+local GAME_WIDTH = 512
+local GAME_HEIGHT = 288
 
 GAME = {}
 
@@ -19,6 +28,7 @@ function love.load()
 		levelWatcher = nil,
 	}
 
+	animations.load()
 	ldtk:load("ldtk/levels.ldtk")
 	ldtk:level("Level1")
 end
@@ -28,20 +38,14 @@ function ldtk.onLevelLoaded(level)
 	GAME.layers = {}
 	GAME.level = level
 	GAME.world = Concord.world()
+	GAME.canvas = love.graphics.newCanvas(512, 288)
 end
 
 function ldtk.onEntity(data)
 	local e = Concord.entity(GAME.world):give("position", data.x, data.y)
 
 	if data.id == "PlayerStart" then
-		e:give("player", {
-			left = "a",
-			right = "d",
-			jump = "space",
-		})
-		e:give("velocity", 0, 0)
-		e:give("gravity")
-		e:give("box", 12, 12)
+		e:assemble(player, { left = "a", right = "d", jump = "space" })
 	end
 
 	if data.id == "Enemy" then
@@ -89,8 +93,23 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.push("all")
+	love.graphics.setCanvas(GAME.canvas)
+	love.graphics.clear(0, 0, 0, 1)
+	love.graphics.setColor(1, 1, 1, 1)
 	for _, layer in pairs(GAME.layers) do
 		layer:draw()
 	end
 	GAME.world:emit("draw")
+	love.graphics.pop()
+
+	love.graphics.setCanvas()
+	love.graphics.draw(
+		GAME.canvas,
+		0,
+		0,
+		0,
+		love.graphics.getWidth() / GAME_WIDTH,
+		love.graphics.getHeight() / GAME_HEIGHT
+	)
 end

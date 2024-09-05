@@ -40,8 +40,8 @@
 				"id": "Enemy",
 				"iid": "cce100d0-4ce0-11ef-9bfa-e10c93323e7c",
 				"layer": "GameEntities",
-				"x": 264,
-				"y": 272,
+				"x": 200,
+				"y": 240,
 				"width": 16,
 				"height": 16,
 				"color": 16711680,
@@ -53,57 +53,11 @@
 				"id": "PlayerStart",
 				"iid": "faf396e0-4ce0-11ef-9bfa-d5a2172779b1",
 				"layer": "GameEntities",
-				"x": 56,
+				"x": 72,
 				"y": 272,
-				"width": 20,
-				"height": 20,
+				"width": 12,
+				"height": 12,
 				"color": 12115535,
-				"customFields" : {}
-			}
-		],
-		"Exit": [
-			{
-				"id": "Exit",
-				"iid": "bd0a1280-3b70-11ee-88c2-3381c9351101",
-				"layer": "Triggerables",
-				"x": 0,
-				"y": 48,
-				"width": 16,
-				"height": 32,
-				"color": 65412,
-				"customFields" : {}
-			},
-			{
-				"id": "Exit",
-				"iid": "b980fb30-4ce0-11ef-9bfa-67d35b70e994",
-				"layer": "Triggerables",
-				"x": 496,
-				"y": 48,
-				"width": 16,
-				"height": 32,
-				"color": 65412,
-				"customFields" : {}
-			},
-			{
-				"id": "Exit",
-				"iid": "bacc66f0-4ce0-11ef-9bfa-252ff784f469",
-				"layer": "Triggerables",
-				"x": 384,
-				"y": 272,
-				"width": 32,
-				"height": 16,
-				"color": 65412,
-				"customFields" : {}
-			},
-			{
-				"id": "Exit",
-				"iid": "bc7c60e0-4ce0-11ef-9bfa-3fae92a8c582",
-				"layer": "Triggerables",
-				"x": 96,
-				"y": 272,
-				"width": 32,
-				"height": 16,
-				"color": 65412,
 				"customFields" : {}
 			}
 		]

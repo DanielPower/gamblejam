@@ -47,16 +47,16 @@ function PhysicsSystem:update(dt)
 	end
 end
 
-function PhysicsSystem:draw()
-	for _, entity in ipairs(self.bodies) do
-		love.graphics.rectangle(
-			"line",
-			entity.position.x,
-			entity.position.y,
-			entity.box.width,
-			entity.box.height
-		)
-	end
-end
+-- function PhysicsSystem:draw()
+-- 	for _, entity in ipairs(self.bodies) do
+-- 		love.graphics.rectangle(
+-- 			"line",
+-- 			math.floor(entity.position.x),
+-- 			math.floor(entity.position.y),
+-- 			entity.box.width,
+-- 			entity.box.height
+-- 		)
+-- 	end
+-- end
 
 return PhysicsSystem
