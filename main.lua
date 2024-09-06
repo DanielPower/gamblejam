@@ -51,6 +51,8 @@ function ldtk.onEntity(data)
 
     if data.id == "Enemy" then
         e:give("enemy")
+        e:give("animation", animations.ghost)
+        e:give("box", 16, 24)
     end
 end
 

@@ -3,25 +3,46 @@ local anim8 = require("lib.anim8")
 local animations = {}
 
 function animations.load()
-	animations.images = {}
-	animations.animations = {}
+    local towerfall = love.graphics.newImage("assets/towerfall.png")
+    local slash = love.graphics.newImage("assets/slashes.png")
 
-	animations.images.towerfall = love.graphics.newImage("assets/towerfall.png")
+    local towerfallGrid = anim8.newGrid(
+        12,
+        16,
+        towerfall:getWidth(),
+        towerfall:getHeight(),
+        796,
+        1970
+    )
 
-	local g = anim8.newGrid(
-		12,
-		16,
-		animations.images.towerfall:getWidth(),
-		animations.images.towerfall:getHeight(),
-		796,
-		1970
-	)
-	animations.animations.towerfall = {
-		idle = anim8.newAnimation(g("1-7", 1), 0.1),
-		walk = anim8.newAnimation(g("1-2", 1), 0.1),
-		jump = anim8.newAnimation(g("1-3", 1), 0.1),
-		fall = anim8.newAnimation(g("1-4", 1), 0.1),
-	}
+    ghostGrid = anim8.newGrid(
+        16,
+        24,
+        towerfall:getWidth(),
+        towerfall:getHeight(),
+        868,
+        0
+    )
+
+    local slashGrid = anim8.newGrid(
+        64,
+        64,
+        slash:getWidth(),
+        slash:getHeight()
+    )
+
+    animations.idle = {
+        image = towerfall,
+        animate = anim8.newAnimation(towerfallGrid("1-7", 1), 0.1)
+    }
+    animations.slash = {
+        image = slash,
+        animate = anim8.newAnimation(slashGrid("1-6", 1), 0.1)
+    }
+    animations.ghost = {
+        image = towerfall,
+        animate = anim8.newAnimation(ghostGrid("1-6", 1), 0.1)
+    }
 end
 
 return animations

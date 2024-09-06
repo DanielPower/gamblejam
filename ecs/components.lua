@@ -26,9 +26,9 @@ Concord.component("box", function(c, width, height)
     c.height = height
 end)
 
-Concord.component("animation", function(c, image, animation)
-    c.image = image
-    c.animation = animation:clone()
+Concord.component("animation", function(c, animation)
+    c.animation = animation.animate:clone()
+    c.image = animation.image
     c.flipX = false
     c.flipY = false
 end)
