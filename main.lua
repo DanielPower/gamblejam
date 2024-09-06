@@ -14,6 +14,7 @@ local DrawSystem = require("ecs.systems/draw")
 local PlayerSystem = require("ecs.systems/player")
 local GravitySystem = require("ecs.systems/gravity")
 local PhysicsSystem = require("ecs.systems/physics")
+local LifespanSystem = require("ecs.systems/lifespan")
 
 local player = require("ecs.assemblages/player")
 
@@ -23,93 +24,91 @@ local GAME_HEIGHT = 288
 GAME = {}
 
 function love.load()
-	GAME = {
-		layers = {},
-		levelWatcher = nil,
-	}
+    GAME = {
+        layers = {},
+        levelWatcher = nil,
+    }
 
-	animations.load()
-	ldtk:load("ldtk/levels.ldtk")
-	ldtk:level("Level1")
+    animations.load()
+    ldtk:load("ldtk/levels.ldtk")
+    ldtk:level("Level1")
 end
 
 function ldtk.onLevelLoaded(level)
-	print("Loding level", level.id)
-	GAME.layers = {}
-	GAME.level = level
-	GAME.world = Concord.world()
-	GAME.canvas = love.graphics.newCanvas(512, 288)
+    print("Loding level [" .. tostring(level.id) .. "]")
+    GAME.layers = {}
+    GAME.level = level
+    GAME.world = Concord.world()
+    GAME.canvas = love.graphics.newCanvas(512, 288)
 end
 
 function ldtk.onEntity(data)
-	local e = Concord.entity(GAME.world):give("position", data.x, data.y)
+    local e = Concord.entity(GAME.world):give("position", data.x, data.y)
 
-	if data.id == "PlayerStart" then
-		e:assemble(player, { left = "a", right = "d", jump = "space" })
-	end
+    if data.id == "PlayerStart" then
+        e:assemble(player, { left = "left", right = "right", jump = "z" })
+    end
 
-	if data.id == "Enemy" then
-		e:give("enemy")
-	end
+    if data.id == "Enemy" then
+        e:give("enemy")
+    end
 end
 
 function ldtk.onLayer(layer)
-	Pprint(layer.intGrid)
-	for i, v in ipairs(layer.intGrid) do
-		local x = (i - 1) % layer.width
-		local y = math.floor((i - 1) / layer.width)
-		if v == 1 then
-			print("box")
-			Concord.entity(GAME.world)
-				:give("position", x * layer.gridSize, y * layer.gridSize)
-				:give("box", layer.gridSize, layer.gridSize)
-		end
-	end
-	GAME.layers[layer.id] = layer
+    for i, v in ipairs(layer.intGrid) do
+        local x = (i - 1) % layer.width
+        local y = math.floor((i - 1) / layer.width)
+        if v == 1 then
+            Concord.entity(GAME.world)
+                :give("position", x * layer.gridSize, y * layer.gridSize)
+                :give("box", layer.gridSize, layer.gridSize)
+        end
+    end
+    GAME.layers[layer.id] = layer
 end
 
 function ldtk.onLevelCreated(level)
-	GAME.world:addSystems(DrawSystem, PlayerSystem, GravitySystem, PhysicsSystem)
-	GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
-		print("Level [" .. level.id .. "] has changed. Reloading...")
-		ldtk:load("ldtk/levels.ldtk")
-		ldtk:level("Level1")
-	end)
+    GAME.world:addSystems(DrawSystem, PlayerSystem, GravitySystem, PhysicsSystem, LifespanSystem)
+    GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
+        print("Level [" .. level.id .. "] has changed. Reloading...")
+        ldtk:load("ldtk/levels.ldtk")
+        ldtk:level("Level1")
+    end)
 end
 
 function love.keypressed(key)
-	if key == "escape" then
-		love.event.quit()
-	end
-	if key == "r" then
-		love.event.quit("restart")
-	end
-	GAME.world:emit("keypressed", key)
+    if key == "escape" then
+        love.event.quit()
+    end
+    if key == "r" then
+        love.event.quit("restart")
+    end
+    GAME.world:emit("keypressed", key)
 end
 
 function love.update(dt)
-	GAME.fileWatcher.update()
-	GAME.world:emit("update", dt)
+    GAME.fileWatcher.update()
+    GAME.world:emit("update", dt)
 end
 
 function love.draw()
-	love.graphics.push("all")
-	love.graphics.setCanvas(GAME.canvas)
-	love.graphics.clear(0, 0, 0, 1)
-	love.graphics.setColor(1, 1, 1, 1)
-	for _, layer in pairs(GAME.layers) do
-		layer:draw()
-	end
-	GAME.world:emit("draw")
-	love.graphics.pop()
+    love.graphics.push("all")
+    love.graphics.setCanvas(GAME.canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    for _, layer in pairs(GAME.layers) do
+        layer:draw()
+    end
+    GAME.world:emit("draw")
+    love.graphics.pop()
 
-	love.graphics.setCanvas()
-	love.graphics.draw(
-		GAME.canvas,
-		0,
-		0,
-		0,
-		love.graphics.getWidth() / GAME_WIDTH,
-		love.graphics.getHeight() / GAME_HEIGHT
-	)
+    love.graphics.setCanvas()
+    love.graphics.draw(
+        GAME.canvas,
+        0,
+        0,
+        0,
+        love.graphics.getWidth() / GAME_WIDTH,
+        love.graphics.getHeight() / GAME_HEIGHT
+    )
 end

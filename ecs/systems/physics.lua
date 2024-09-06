@@ -38,6 +38,11 @@ function PhysicsSystem:update(dt)
 				entity.velocity.x = 0
 			end
 			if col.normal.y ~= 0 then
+				if col.normal.y < 0 then
+					if entity.jump then
+						entity.jump.jumps = 0
+					end
+				end
 				entity.velocity.y = 0
 			end
 		end

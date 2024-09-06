@@ -1,4 +1,7 @@
 {
   "Lua.workspace.userThirdParty": ["./lls-addons"],
-  "Lua.runtime.version": "LuaJIT"
+  "Lua.runtime.version": "LuaJIT",
+    "diagnostics.disable": [
+        "duplicate-set-field"
+    ]
 }

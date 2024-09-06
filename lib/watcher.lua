@@ -1,5 +1,4 @@
 local FileWatcher = function(filePath, callback)
-	print(filePath)
 	local watcher = {}
 	local lastModified = love.filesystem.getInfo(filePath).modtime
 	watcher.update = function()

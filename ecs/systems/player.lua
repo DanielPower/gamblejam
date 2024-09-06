@@ -7,8 +7,11 @@ local jump = 220
 
 function PlayerSystem:keypressed(key)
 	for _, e in ipairs(self.players) do
-		if key == e.player.keys.jump then
-			e.velocity.y = -jump
+		if e.jump then
+			if key == e.player.keys.jump and e.jump.jumps < e.jump.maxJumps then
+				e.jump.jumps = e.jump.jumps + 1
+				e.velocity.y = -e.jump.speed
+			end
 		end
 	end
 end
