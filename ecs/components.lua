@@ -2,8 +2,6 @@ Concord.component("player", function(c, keys)
     c.keys = keys
 end)
 
-Concord.component("enemy")
-
 Concord.component("gravity", function(c, x, y)
     c.x = x or 0
     c.y = y or 600
@@ -15,8 +13,8 @@ Concord.component("position", function(c, x, y)
 end)
 
 Concord.component("velocity", function(c, x, y)
-    c.x = x
-    c.y = y
+    c.x = x or 0
+    c.y = y or 0
     c.tx = 0
     c.ty = 0
 end)
@@ -42,4 +40,10 @@ end)
 Concord.component("lifespan", function(c, duration)
     c.duration = duration
     c.remaining = duration
+end)
+
+Concord.component("ghost", function(c)
+    c.moveTimer = 0
+    c.pauseTimer = 0
+    c.isMoving = true
 end)

@@ -23,7 +23,9 @@
 				"width": 16,
 				"height": 16,
 				"color": 16711680,
-				"customFields" : {}
+				"customFields": {
+					"Type": "Ghost"
+				}
 			},
 			{
 				"id": "Enemy",
@@ -34,7 +36,9 @@
 				"width": 16,
 				"height": 16,
 				"color": 16711680,
-				"customFields" : {}
+				"customFields": {
+					"Type": "Ghost"
+				}
 			},
 			{
 				"id": "Enemy",
@@ -45,7 +49,9 @@
 				"width": 16,
 				"height": 16,
 				"color": 16711680,
-				"customFields" : {}
+				"customFields": {
+					"Type": "Ghost"
+				}
 			}
 		],
 		"PlayerStart": [

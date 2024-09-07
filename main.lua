@@ -15,8 +15,10 @@ local PlayerSystem = require("ecs.systems/player")
 local GravitySystem = require("ecs.systems/gravity")
 local PhysicsSystem = require("ecs.systems/physics")
 local LifespanSystem = require("ecs.systems/lifespan")
+local GhostSystem = require("ecs.systems/ai/ghost")
 
 local player = require("ecs.assemblages/player")
+local ghost = require("ecs.assemblages.ghost")
 
 local GAME_WIDTH = 512
 local GAME_HEIGHT = 288
@@ -50,9 +52,9 @@ function ldtk.onEntity(data)
     end
 
     if data.id == "Enemy" then
-        e:give("enemy")
-        e:give("animation", animations.ghost)
-        e:give("box", 16, 24)
+        if data.props.Type == "Ghost" then
+            e:assemble(ghost)
+        end
     end
 end
 
@@ -70,7 +72,7 @@ function ldtk.onLayer(layer)
 end
 
 function ldtk.onLevelCreated(level)
-    GAME.world:addSystems(DrawSystem, PlayerSystem, GravitySystem, PhysicsSystem, LifespanSystem)
+    GAME.world:addSystems(DrawSystem, PlayerSystem, GravitySystem, PhysicsSystem, LifespanSystem, GhostSystem)
     GAME.fileWatcher = FileWatcher("ldtk/levels/" .. level.id .. ".ldtkl", function()
         print("Level [" .. level.id .. "] has changed. Reloading...")
         ldtk:load("ldtk/levels.ldtk")
@@ -94,6 +96,8 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.setLineWidth(1)
+    love.graphics.setLineStyle("rough")
     love.graphics.push("all")
     love.graphics.setCanvas(GAME.canvas)
     love.graphics.clear(0, 0, 0, 1)

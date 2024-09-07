@@ -1,6 +1,4 @@
 local DrawSystem = Concord.system({
-    players = { "position", "player" },
-    enemies = { "position", "enemy" },
     animations = { "position", "animation" },
 })
 
