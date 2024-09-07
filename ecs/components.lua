@@ -22,13 +22,23 @@ end)
 Concord.component("box", function(c, width, height)
     c.width = width
     c.height = height
+    c.collisions = {
+        all = {},
+        left = {},
+        right = {},
+        up = {},
+        down = {}
+    }
 end)
 
-Concord.component("animation", function(c, animation)
+Concord.component("animation", function(c, animation, options)
+    options = options or {}
     c.animation = animation.animate:clone()
     c.image = animation.image
-    c.flipX = false
-    c.flipY = false
+    c.flipX = options.flipX or false
+    c.flipY = options.flipY or false
+    c.ox = options.ox or 0
+    c.oy = options.oy or 0
 end)
 
 Concord.component("jump", function(c, jumpHeight, maxJumps)
@@ -47,3 +57,5 @@ Concord.component("ghost", function(c)
     c.pauseTimer = 0
     c.isMoving = true
 end)
+
+Concord.component("solid")

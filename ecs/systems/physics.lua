@@ -29,21 +29,45 @@ function PhysicsSystem:update(dt)
         local futureY = entity.position.y + (entity.velocity.y + entity.velocity.ty) * dt
         entity.velocity.tx = 0
         entity.velocity.ty = 0
+        entity.box.collisions = {
+            all = {},
+            left = {},
+            right = {},
+            up = {},
+            down = {}
+        }
 
-        local nextX, nextY, cols, len = self.world:move(entity, futureX, futureY)
+        local nextX, nextY, cols, len = self.world:move(entity, futureX, futureY, function(item, other)
+            if item.solid and other.solid then
+                return "slide"
+            end
+            return "cross"
+        end)
 
         for i = 1, len do
             local col = cols[i]
+            entity.box.collisions.all[col.other] = col
             if col.normal.x ~= 0 then
-                entity.velocity.x = 0
+                if col.other.solid then
+                    entity.velocity.x = 0
+                end
+                if col.normal.x < 0 then
+                    entity.box.collisions.left[col.other] = col
+                end
+                if col.normal.x > 0 then
+                    entity.box.collisions.right[col.other] = col
+                end
             end
             if col.normal.y ~= 0 then
-                if col.normal.y < 0 then
-                    if entity.jump then
-                        entity.jump.jumps = 0
-                    end
+                if col.other.solid then
+                    entity.velocity.y = 0
                 end
-                entity.velocity.y = 0
+                if col.normal.y < 0 then
+                    entity.box.collisions.down[col.other] = col
+                end
+                if col.normal.y > 0 then
+                    entity.box.collisions.up[col.other] = col
+                end
             end
         end
 

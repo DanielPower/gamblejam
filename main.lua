@@ -66,6 +66,7 @@ function ldtk.onLayer(layer)
             Concord.entity(GAME.world)
                 :give("position", x * layer.gridSize, y * layer.gridSize)
                 :give("box", layer.gridSize, layer.gridSize)
+                :give("solid")
         end
     end
     GAME.layers[layer.id] = layer
