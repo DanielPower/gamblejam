@@ -35,6 +35,11 @@ function GhostSystem:update(dt)
                 ghost.ghost.moveTimer = 0
             end
         end
+        for _, col in pairs(ghost.box.collisions.up) do
+            if col.other.player and col.other.velocity.y > 0 then
+                ghost:destroy()
+            end
+        end
     end
 end
 
