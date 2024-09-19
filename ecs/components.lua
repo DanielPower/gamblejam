@@ -58,4 +58,5 @@ Concord.component("ghost", function(c)
     c.isMoving = true
 end)
 
+Concord.component("weakHead")
 Concord.component("solid")

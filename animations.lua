@@ -15,7 +15,7 @@ function animations.load()
         1970
     )
 
-    ghostGrid = anim8.newGrid(
+    local ghostGrid = anim8.newGrid(
         16,
         24,
         towerfall:getWidth(),
@@ -25,8 +25,8 @@ function animations.load()
     )
 
     local slashGrid = anim8.newGrid(
-        64,
-        64,
+        32,
+        32,
         slash:getWidth(),
         slash:getHeight()
     )
@@ -37,7 +37,7 @@ function animations.load()
     }
     animations.slash = {
         image = slash,
-        animate = anim8.newAnimation(slashGrid("1-6", 1), 0.1)
+        animate = anim8.newAnimation(slashGrid("1-6", 1), 0.05)
     }
     animations.ghost = {
         image = towerfall,

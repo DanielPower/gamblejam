@@ -48,7 +48,7 @@ function ldtk.onEntity(data)
     local e = Concord.entity(GAME.world):give("position", data.x, data.y)
 
     if data.id == "PlayerStart" then
-        e:assemble(player, { left = "left", right = "right", jump = "z" })
+        e:assemble(player, { left = "left", right = "right", jump = "c", attack = "v" })
     end
 
     if data.id == "Enemy" then
